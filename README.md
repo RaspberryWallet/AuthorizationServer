@@ -1,6 +1,6 @@
 #### This module is going to authorize wallet decryption as trusted third party service.
 
-#### Initialization of module sequence diagram:
+### Initialization of module sequence diagram:
 
 ![](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgQXV0aG9yaXphdGlvbiBTZXJ2ZXIgTW9kdWxlOiBpbml0aWFsABcHCgpNYW5hZ2VyLT5SUEkAJQYAIghTZW5kIHNpbmdsZSBwYXJ0IG9mIGEgd2FsbGV0IHNlY3JldCBrZXkKACoPADcTRW5jcnlwACkMIHdpdGggcmFuZG9tIHBhc3N3b3JkADgSAIE9DQCBQwY6IFJlZ2lzdGVyIGEgbmV3AIEKBwAVJ0F1dGhlbnRpY2F0ZSBvbiBzAIIXBmFuZCBzZW5kIGUAgSQGZWQAgVUMAHMTLT5SZWRpczogU3RvcmUAgg4HJ3MAKxUAgjgF&s=default)
 
@@ -20,7 +20,7 @@ AuthorizationServer->Redis: Store wallet's encrypted secret key part
 </p>
 </details>
 
-#### Unclock module sequence diagram:
+### Unclock module sequence diagram:
 
 ![](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgQXV0aG9yaXphdGlvbiBTZXJ2ZXIgTW9kdWxlOiB1bmxvY2tpbmcgbQANBQoKTWFuYWdlci0-UlBJACcGACQIVQAnBQAhCAAQDy0-AFsNAGEGOiBMb2dpbiB3aXRoIHNlY3JldCBwYXNzd29yZAoAHRMALhdWYWxpZGF0ZQAzCQBLBlNwcmluZyBTZWN1cml0eQCBOggAQxVSZWRpczogR2V0IHdhbGxldCdzIGVuY3J5cHRlZACBEwhrZXkAJxcAgXsQUmV0dXJuACwfAIIREQCCQRFEZQB9BQB1CwCCJQZyYW5kb20AgiEKAIJbEQCDHgcAgQAJZABDBmVkIHBhcnQgb2YAgUcMCg&s=default)
 
