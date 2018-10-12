@@ -48,9 +48,7 @@ RPIServerModule->Manager: Return decrypted part of secret key
 
 User has to be logged in, to use this service. The authorization is configured as default Spring Boot Security and will be changed in the future to OAuth 2.0.
 
-### Write secret
 
-All of them take POST parameters.
 ```
 # POST, key = secret, type = String in UTF-8
 # 409 Conflict if secret is already set
