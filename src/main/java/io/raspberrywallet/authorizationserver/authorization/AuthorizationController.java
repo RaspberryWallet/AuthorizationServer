@@ -20,7 +20,7 @@ public class  AuthorizationController {
     @Value("${redis.port}")
     private int port;
     
-    private Jedis jedis = new Jedis("localhost", 6379);
+    private Jedis jedis = new Jedis(redisHost, port);
     
     @GetMapping(value = "/get")
     ResponseEntity<ByteArrayResource> getSecret() {
@@ -56,6 +56,19 @@ public class  AuthorizationController {
         
         jedis.set(username.getBytes(), secret.getBytes());
         return new ResponseEntity(HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "remove")
+    ResponseEntity removeSecret() {
+        String username = getUsername();
+        
+        if (jedis.exists(username)) {
+            jedis.del(username);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
     
     private String getUsername() {

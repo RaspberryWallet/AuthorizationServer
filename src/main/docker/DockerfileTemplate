@@ -1,0 +1,6 @@
+FROM openjdk:11-jdk-slim
+
+VOLUME /tmp
+ADD maven/${artifactName}.jar ${artifactName}.jar
+
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/${artifactName}.jar"]

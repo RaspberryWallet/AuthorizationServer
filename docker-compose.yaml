@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  spring-app:
+    image: raspberrywallet/authorization-server
+    ports:
+      - 8080:8080
+    networks:
+    - redis-net
+    depends_on:
+    - redis
+
+  redis:
+    image: redis:4.0-stretch
+    hostname: redis
+    networks:
+    - redis-net
+
+networks:
+  redis-net:
