@@ -5,7 +5,7 @@
 
     <groupId>io.raspberrywallet</groupId>
     <artifactId>authorizationserver</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
 
     <name>authorizationserver</name>
@@ -27,15 +27,18 @@
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.2</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -46,9 +49,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
@@ -88,49 +92,6 @@
                 </configuration>
             </plugin>
 
-            <!--<plugin>-->
-                <!--<artifactId>exec-maven-plugin</artifactId>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>Dockerfile generation</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>exec</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<executable>${project.basedir}/src/scripts/generate-dockerfile.sh</executable>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.gmavenplus</groupId>-->
-                <!--<artifactId>gmavenplus-plugin</artifactId>-->
-                <!--<version>1.6</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>prepare-package</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>execute</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-                <!--<configuration>-->
-                    <!--<scripts>-->
-                        <!--<script>file:///${project.basedir}/src/main/scripts/BuildDockerfile.groovy</script>-->
-                    <!--</scripts>-->
-                <!--</configuration>-->
-                <!--<dependencies>-->
-                    <!--<dependency>-->
-                        <!--<groupId>org.codehaus.groovy</groupId>-->
-                        <!--<artifactId>groovy-all</artifactId>-->
-                        <!--<version>2.4.8</version>-->
-                        <!--<scope>runtime</scope>-->
-                    <!--</dependency>-->
-                <!--</dependencies>-->
-            <!--</plugin>-->
         </plugins>
     </build>
 
