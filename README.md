@@ -99,7 +99,7 @@ AuthorizationServer->Redis: Store wallet's encrypted secret key part
 
 ### Unclock module sequence diagram:
 
-![](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgQXV0aG9yaXphdGlvbiBTZXJ2ZXIgTW9kdWxlOiB1bmxvY2tpbmcgbQANBQoKTWFuYWdlci0-UlBJACcGACQIVQAnBQAhCAAQDy0-AFsNAGEGOiBMb2dpbiB3aXRoIHNlY3JldCBwYXNzd29yZAoAHRMALhdWYWxpZGF0ZQAzCQBLBlNwcmluZyBTZWN1cml0eQCBOggAQxVSZWRpczogR2V0IHdhbGxldCdzIGVuY3J5cHRlZACBEwhrZXkAJxcAgXsQUmV0dXJuACwfAIIREQCCQRFEZQB9BQB1CwCCJQZyYW5kb20AgiEKAIJbEQCDHgcAgQAJZABDBmVkIHBhcnQgb2YAgUcMCg&s=default)
+![](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=TWFuYWdlci0-UlBJU2VydmVyTW9kdWxlOiBVbmxvY2sgbQAKBQoAEA8tPkF1dGhvcml6YXRpb24ANAY6IExvZ2luIHdpdGggc2VjcmV0IHBhc3N3b3JkCgAdEwBiE1ZhbGlkYXRlAC8JIGFuZCByZXR1cm4gc2Vzc2lvbiB0b2tlbgBrJ0dldCBlbmNyeXB0ZWQAgQ0Ia2V5AHkXZWRpcwAvBndhbGxldCdzABIsAIIzEFIAgTIGAC0eAIJJEQCCeRFEZQCBOwUAgTMLAIJdBnJhbmRvbQCCWQoAgxMRAINWBwCBAAlkAEMGZWQgcGFydCBvZgCCBQw&s=default)
 
 <details><summary>Sequence diagram code</summary>
 <p>
@@ -109,7 +109,8 @@ title Authorization Server Module: unlocking module
 
 Manager->RPIServerModule: Unlock module
 RPIServerModule->AuthorizationServer: Login with secret password
-AuthorizationServer->AuthorizationServer: Validate password with Spring Security module
+AuthorizationServer->RPIServerModule: Validate password and return session token
+RPIServerModule->AuthorizationServer: Get encrypted secret key
 AuthorizationServer->Redis: Get wallet's encrypted secret key
 AuthorizationServer->RPIServerModule: Return wallet's encrypted secret key
 RPIServerModule->RPIServerModule: Decrypt secret key with random password
