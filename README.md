@@ -1,4 +1,38 @@
-#### This module is going to authorize wallet decryption as trusted third party service.
+### This module is going to authorize wallet decryption as trusted third party service.
+
+#### Compiling, packaging and building Docker images.
+
+```
+# build jars and then build read-to-use Docker images
+mvn clean package docker:build
+
+# after we made docker images, we can just turn on the system
+docker-compose up -d
+```
+### After a new version release, you have to change artifact name in Dockerfile, since Dockerfile generator is not implemented yet!
+
+#### Endpoints
+
+User has to be logged in, to use this service. The authorization is configured as default Spring Boot Security and will be changed in the future to OAuth 2.0.
+
+
+```
+# POST, key = secret, type = String in UTF-8
+# 409 Conflict if secret is already set
+/authorization/secret/set
+
+# returns String with secret
+# 404 Not found if wallet has no secret stored
+/authorization/secret/get
+
+# works as 'set' but overwrittes secret if there is already one assigned to wallet
+/authorization/secret/overwritte
+
+# registers a new wallet
+/register
+
+/login
+``` 
 
 ### Initialization of module sequence diagram:
 
