@@ -1,4 +1,4 @@
-### This module is going to authorize wallet decryption as trusted third party service.
+### This module authorizing wallet decryption as trusted third party service.
 
 #### Compiling, packaging and building Docker images.
 
@@ -13,26 +13,69 @@ docker-compose up -d
 
 #### Endpoints
 
-User has to be logged in, to use this service. The authorization is configured as default Spring Boot Security and will be changed in the future to OAuth 2.0.
+Login is done by custom token system implementation.
 
-
+##### Register
 ```
-# POST, key = secret, type = String in UTF-8
-# 409 Conflict if secret is already set
-/authorization/secret/set
+POST /authorization/register
+Content-Type: application/json; charset=UTF-8
+{
+	"walletUUID":"abcd",
+	"password":"1234"
+}
+```
+##### Login
+```
+POST /authorization/login
+Content-Type: application/json; charset=UTF-8
+{
+	"walletUUID":"abcd",
+	"password":"1234"
+}
 
-# returns String with secret
-# 404 Not found if wallet has no secret stored
-/authorization/secret/get
+# returns token which is UUID converted to String
+```
+##### Logout
+```
+POST /authorization/logout
+Content-Type: application/json; charset=UTF-8
+{
+	"walletUUID":"abcd",
+	"password":"1234"
+}
+```
+##### Set secret
+```
+POST /authorization/secret/set
+Content-Type: application/json; charset=UTF-8
+{
+	"walletUUID":"abcd",
+	"token":"01badf5d-fb41-4d2a-a029-0bce54bea501",
+	"secret":"data"
+}
+```
+##### Get secret
+```
+POST /authorization/secret/get
+Content-Type: application/json; charset=UTF-8
+{
+	"walletUUID":"abcd",
+	"token":"01badf5d-fb41-4d2a-a029-0bce54bea501"
 
-# works as 'set' but overwrittes secret if there is already one assigned to wallet
-/authorization/secret/overwritte
+}
 
-# registers a new wallet
-/register
-
-/login
-``` 
+# returns secret as String
+```
+##### Overwrittes existing secret
+```
+POST /authorization/secret/overwritte
+Content-Type: application/json; charset=UTF-8
+{
+	"walletUUID":"abcd",
+	"token":"01badf5d-fb41-4d2a-a029-0bce54bea501",
+	"secret":"duplicate"
+}
+```
 
 ### Initialization of module sequence diagram:
 
