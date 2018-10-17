@@ -66,9 +66,9 @@ Content-Type: application/json; charset=UTF-8
 
 # returns secret as String
 ```
-##### Overwrittes existing secret
+##### Overwrites existing secret
 ```
-POST /authorization/secret/overwritte
+POST /authorization/secret/overwrite
 Content-Type: application/json; charset=UTF-8
 {
 	"walletUUID":"abcd",
