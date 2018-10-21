@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/authorization/secret")
-public class  AuthorizationController {
+public class  AuthorizationController extends Controller {
     
     @PostMapping(value = "get")
     ResponseEntity<String> getSecret(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
+        
+        if (!stringsNonEmpty(walletUUID, token))
+            return ResponseEntity.badRequest().build();
         
         if (!isAuthorized(walletUUID, token))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -34,6 +37,9 @@ public class  AuthorizationController {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
         String secret = request.getAsString("secret");
+    
+        if (!stringsNonEmpty(walletUUID, token, secret))
+            return ResponseEntity.badRequest().build();
         
         if (!isAuthorized(walletUUID, token))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -50,6 +56,9 @@ public class  AuthorizationController {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
         String secret = request.getAsString("secret");
+    
+        if (!stringsNonEmpty(walletUUID, token, secret))
+            return ResponseEntity.badRequest().build();
         
         if (secret == null)
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -65,7 +74,10 @@ public class  AuthorizationController {
     ResponseEntity removeSecret(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
-        
+    
+        if (!stringsNonEmpty(walletUUID, token))
+            return ResponseEntity.badRequest().build();
+    
         if (!isAuthorized(walletUUID, token))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         

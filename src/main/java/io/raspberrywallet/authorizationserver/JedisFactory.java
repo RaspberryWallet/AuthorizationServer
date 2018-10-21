@@ -4,7 +4,7 @@ import redis.clients.jedis.Jedis;
 
 abstract class JedisFactory {
     
-    private static Jedis jedis = new Jedis("localhost", 6379);
+    private static Jedis jedis = new Jedis("redis", 6379);
     
     private JedisFactory() {}
     

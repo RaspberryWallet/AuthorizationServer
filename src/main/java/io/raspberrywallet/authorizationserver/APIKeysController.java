@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/authorization")
-public class APIKeysController {
+public class APIKeysController extends Controller {
     
     private static final int DEFAULT_SESSION_LENGTH = 1800;
     
@@ -19,6 +19,9 @@ public class APIKeysController {
     public ResponseEntity<String> login(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String password = request.getAsString("password");
+        
+        if (!stringsNonEmpty(walletUUID, password))
+            return ResponseEntity.badRequest().build();
         
         int sessionLength = DEFAULT_SESSION_LENGTH;
         if (request.containsKey("sessionLength"))
@@ -47,6 +50,9 @@ public class APIKeysController {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
         
+        if (!stringsNonEmpty(walletUUID, token))
+            return ResponseEntity.badRequest().build();
+        
         if (RedisDatabase.tokenExists(walletUUID)) {
             String tokenOriginal = RedisDatabase.getToken(walletUUID);
             if (tokenOriginal.equals(token)) {
@@ -65,6 +71,9 @@ public class APIKeysController {
         String walletUUID = request.getAsString("walletUUID");
         String password = request.getAsString("password");
         
+        if (!stringsNonEmpty(walletUUID, password))
+            return ResponseEntity.badRequest().build();
+        
         if (walletIsRegistered(walletUUID))
             return new ResponseEntity(HttpStatus.CONFLICT);
         
@@ -73,6 +82,19 @@ public class APIKeysController {
         HashAndSalt hashAndSalt = HashAndSalt.builder().salt(salt).hash(hash).build();
         registerNewWallet(walletUUID, hashAndSalt);
         return ResponseEntity.ok().build();
+    }
+    
+    @PostMapping(value = "exists")
+    public ResponseEntity exists(@RequestBody JSONObject request) {
+        String walletUUID = request.getAsString("walletUUID");
+        
+        if (!stringsNonEmpty(walletUUID))
+            return ResponseEntity.badRequest().build();
+    
+        if (walletIsRegistered(walletUUID))
+            return new ResponseEntity(HttpStatus.OK);
+        else
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
     
     private void registerNewWallet(String walletUUID, HashAndSalt hashAndSalt) {
