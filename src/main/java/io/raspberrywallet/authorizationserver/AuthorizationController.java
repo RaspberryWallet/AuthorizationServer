@@ -51,7 +51,7 @@ public class  AuthorizationController extends Controller {
         return new ResponseEntity(HttpStatus.OK);
     }
     
-    @PostMapping(value = "overwritte")
+    @PostMapping(value = "overwrite")
     ResponseEntity overwritteSecret(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
