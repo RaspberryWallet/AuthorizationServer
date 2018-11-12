@@ -1,18 +1,26 @@
 package io.raspberrywallet.authorizationserver;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Log
 @RestController
 @RequestMapping("/internal")
-class InternalController extends Controller {
+public class InternalController extends Controller {
     
     @GetMapping(value = "redis/isOnline")
     public ResponseEntity isRedisOnline() {
-        return RedisDatabase.ping() ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        log.info("Is Redis online request.");
+        if (RedisDatabase.ping()) {
+            log.info("[200] Redis is online.");
+            return ResponseEntity.ok("true");
+        }
+        else {
+            log.info("[200] Redis is offline.");
+            return ResponseEntity.ok("false");
+        }
     }
-    
 }

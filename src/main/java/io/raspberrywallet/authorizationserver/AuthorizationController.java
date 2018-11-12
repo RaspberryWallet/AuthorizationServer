@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class  AuthorizationController extends Controller {
     
     @PostMapping(value = "get")
-    ResponseEntity<String> getSecret(@RequestBody JSONObject request) {
+    public ResponseEntity<String> getSecret(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
         
@@ -42,7 +42,7 @@ public class  AuthorizationController extends Controller {
     }
     
     @PostMapping(value = "set")
-    ResponseEntity setSecret(@RequestBody JSONObject request) {
+    public ResponseEntity setSecret(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
         String secret = request.getAsString("secret");
@@ -68,7 +68,7 @@ public class  AuthorizationController extends Controller {
     }
     
     @PostMapping(value = "overwrite")
-    ResponseEntity overwritteSecret(@RequestBody JSONObject request) {
+    public ResponseEntity overwritteSecret(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
         String secret = request.getAsString("secret");
@@ -89,7 +89,7 @@ public class  AuthorizationController extends Controller {
     }
     
     @PostMapping(value = "exists")
-    ResponseEntity isSecretSet(@RequestBody JSONObject request) {
+    public ResponseEntity isSecretSet(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
         
@@ -113,7 +113,7 @@ public class  AuthorizationController extends Controller {
     }
     
     @PostMapping(value = "remove")
-    ResponseEntity removeSecret(@RequestBody JSONObject request) {
+    public ResponseEntity removeSecret(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
         String token = request.getAsString("token");
     

@@ -70,7 +70,8 @@ abstract class RedisDatabase {
     
     static boolean ping() {
         try {
-            return jedis.ping().equals("PING");
+            String pingResult = jedis.ping();
+            return pingResult != null && !pingResult.equals("");
         } catch (Exception e) {
             //catch them all
             return false;

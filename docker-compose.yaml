@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
 
@@ -6,6 +6,7 @@ services:
     image: raspberrywallet/authorization-server
     ports:
     - 8080:8080
+    - 8443:8443
     networks:
     - redis-net
     depends_on:
@@ -14,8 +15,6 @@ services:
   redis:
     image: redis:4.0-stretch
     hostname: redis
-    ports:
-    - 6379:6379
     networks:
     - redis-net
 

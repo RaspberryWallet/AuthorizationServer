@@ -104,18 +104,22 @@ public class APIKeysController extends Controller {
     }
     
     @PostMapping(value = "exists")
-    public ResponseEntity exists(@RequestBody JSONObject request) {
+    public ResponseEntity walletExists(@RequestBody JSONObject request) {
         String walletUUID = request.getAsString("walletUUID");
     
-        log.info("Exists request with JSON: " + request.toString());
+        log.info("Wallet exists request with JSON: " + request.toString());
         
         if (!stringsNonEmpty(walletUUID))
             return ResponseEntity.badRequest().build();
     
-        if (walletIsRegistered(walletUUID))
+        if (walletIsRegistered(walletUUID)) {
+            log.info("[200] Wallet exists.");
             return new ResponseEntity(HttpStatus.OK);
-        else
+        }
+        else {
+            log.info("[404] Wallet does not exists.");
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
     
     private void registerNewWallet(String walletUUID, HashAndSalt hashAndSalt) {
