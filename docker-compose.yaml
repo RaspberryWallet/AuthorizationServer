@@ -1,11 +1,12 @@
-version: '3'
+version: '3.5'
 
 services:
 
   spring-app:
     image: raspberrywallet/authorization-server
     ports:
-      - 8080:8080
+    - 8080:8080
+    - 8443:8443
     networks:
     - redis-net
     depends_on:

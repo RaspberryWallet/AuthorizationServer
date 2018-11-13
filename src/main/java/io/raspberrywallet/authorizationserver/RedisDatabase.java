@@ -68,4 +68,14 @@ abstract class RedisDatabase {
         return jedis.exists(JedisKeysFactory.getHashKey(walletUUID));
     }
     
+    static boolean ping() {
+        try {
+            String pingResult = jedis.ping();
+            return pingResult != null && !pingResult.equals("");
+        } catch (Exception e) {
+            //catch them all
+            return false;
+        }
+    }
+    
 }
