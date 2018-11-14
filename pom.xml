@@ -5,7 +5,7 @@
 
     <groupId>io.raspberrywallet</groupId>
     <artifactId>authorizationserver</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
 
     <name>authorizationserver</name>
@@ -21,7 +21,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <dockerhub.user>raspberrywallet</dockerhub.user>
+        <dockerhub.user>piwallet</dockerhub.user>
         <docker.image.name>authorization-server</docker.image.name>
         <java.version>1.8</java.version>
         <project.java.version>1.8</project.java.version>

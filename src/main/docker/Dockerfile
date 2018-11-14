@@ -1,6 +1,6 @@
 FROM openjdk:11-jdk-slim
 
-ENV ARTIFACT_FILE authorizationserver-0.2
+ENV ARTIFACT_FILE authorizationserver-0.3
 ENV KEY_PASSWORD changeme
 
 RUN mkdir -p /opt/wallet/keys \
