@@ -1,0 +1,9 @@
+# https
+server:
+  port: 8443
+  ssl:
+    key-store: "file:/opt/wallet/keys/keystore.p12"
+    key-store-password: changeme
+    keyStoreType: PKCS12
+    keyAlias: authserver
+
