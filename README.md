@@ -1,3 +1,8 @@
+<img src="docs/logo.png" width="200" align="right">
+
+# AuthorizationServer Wallet Module :key:
+
+
 ### This module authorizing wallet decryption as trusted third party service.
 
 #### Compiling, packaging and building Docker images.
@@ -121,3 +126,19 @@ RPIServerModule->Manager: Return decrypted part of secret key
 
 </p>
 </details>
+
+## Authors
+
+[//]: https://tablesgenerator.com/markdown_tables
+
+| Name                                                 | email                     |
+|------------------------------------------------------|---------------------------|
+| [Patryk Milewski](https://github.com/PatrykMilewski) | patryk.milewski@gmail.com |
+
+## Changelog
+
+[//]: https://tablesgenerator.com/markdown_tables
+
+| Version | Is backward-compatible  | Changes            | Commit ID                                |
+|---------|-------------------------|--------------------|------------------------------------------|
+| 0.3     | Yes                     | Working version    | 3b73c7c2cd815a07972e5aee06e7a3d9f45d9dc7 |
