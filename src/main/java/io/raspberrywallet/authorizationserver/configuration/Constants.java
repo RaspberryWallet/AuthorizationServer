@@ -1,11 +1,11 @@
 package io.raspberrywallet.authorizationserver.configuration;
 
 
-final class ConfigConstants {
+public final class Constants {
 
-    private ConfigConstants() {}
+    private Constants() {}
 
-    static final String PROFILE_DEV = "dev";
-    static final String PROFILE_HEROKU = "prod";
+    public static final String PROFILE_DEV = "dev";
+    public static final String PROFILE_HEROKU = "prod";
 
 }

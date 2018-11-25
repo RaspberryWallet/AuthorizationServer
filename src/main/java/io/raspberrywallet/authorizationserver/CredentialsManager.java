@@ -1,5 +1,9 @@
 package io.raspberrywallet.authorizationserver;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -8,6 +12,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Random;
 
+@Service
 public class CredentialsManager {
     
     private final Random random = new SecureRandom();

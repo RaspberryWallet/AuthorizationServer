@@ -3,6 +3,7 @@ package io.raspberrywallet.authorizationserver;
 import lombok.extern.java.Log;
 
 @Log
+@org.springframework.stereotype.Controller
 abstract class Controller {
     
     boolean stringsNonEmpty(String... strings) {

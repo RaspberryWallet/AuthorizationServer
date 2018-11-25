@@ -2,6 +2,7 @@ package io.raspberrywallet.authorizationserver;
 
 import lombok.extern.java.Log;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/authorization/secret")
 public class  AuthorizationController extends Controller {
+    
+    private final RedisDatabase redisDatabase;
+    
+    @Autowired
+    public AuthorizationController(RedisDatabase redisDatabase) {
+        this.redisDatabase = redisDatabase;
+    }
     
     @PostMapping(value = "get")
     public ResponseEntity<String> getSecret(@RequestBody JSONObject request) {
@@ -27,9 +35,9 @@ public class  AuthorizationController extends Controller {
         }
         
         try {
-            String secret = RedisDatabase.getSecret(walletUUID);
+            String secret = redisDatabase.getSecret(walletUUID);
             log.info("[200] Returning secret with hash: " + secret.hashCode());
-            return new ResponseEntity<>(RedisDatabase.getSecret(walletUUID), HttpStatus.OK);
+            return new ResponseEntity<>(redisDatabase.getSecret(walletUUID), HttpStatus.OK);
         } catch (ValueNotFoundException e) {
             log.warning("[404] Secret not found for this wallet");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -37,7 +45,7 @@ public class  AuthorizationController extends Controller {
     }
     
     private boolean isAuthorized(String walletUUID, String token) {
-        String originalToken = RedisDatabase.getToken(walletUUID);
+        String originalToken = redisDatabase.getToken(walletUUID);
         return originalToken.equals(token);
     }
     
@@ -57,12 +65,12 @@ public class  AuthorizationController extends Controller {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     
-        if (RedisDatabase.secretExists(walletUUID)) {
+        if (redisDatabase.secretExists(walletUUID)) {
             log.severe("[409] Secret is already set for this wallet");
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
     
-        RedisDatabase.setSecret(walletUUID, secret);
+        redisDatabase.setSecret(walletUUID, secret);
         log.info("[200] Secret set with hash code: " + secret.hashCode());
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -83,7 +91,7 @@ public class  AuthorizationController extends Controller {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     
-        RedisDatabase.setSecret(walletUUID, secret);
+        redisDatabase.setSecret(walletUUID, secret);
         log.info("[200] Secret overwritten with hash code: " + secret.hashCode());
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -103,7 +111,7 @@ public class  AuthorizationController extends Controller {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         
-        if (RedisDatabase.secretExists(walletUUID)) {
+        if (redisDatabase.secretExists(walletUUID)) {
             log.info("[200] Secret exists");
             return ResponseEntity.ok().build();
         } else {
@@ -127,12 +135,12 @@ public class  AuthorizationController extends Controller {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         
-        if (!RedisDatabase.secretExists(walletUUID)) {
+        if (!redisDatabase.secretExists(walletUUID)) {
             log.severe("[404] Secret not found");
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     
-        RedisDatabase.delSecret(walletUUID);
+        redisDatabase.delSecret(walletUUID);
         log.info("[200] Secret removed");
         return new ResponseEntity(HttpStatus.OK);
     }

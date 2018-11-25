@@ -2,6 +2,7 @@ package io.raspberrywallet.authorizationserver;
 
 import lombok.extern.java.Log;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,14 @@ public class APIKeysController extends Controller {
     
     private static final int DEFAULT_SESSION_LENGTH = 1800;
     
-    private CredentialsManager credentialsManager = new CredentialsManager();
+    private final CredentialsManager credentialsManager;
+    private final RedisDatabase redisDatabase;
+    
+    @Autowired
+    public APIKeysController(CredentialsManager credentialsManager, RedisDatabase redisDatabase) {
+        this.credentialsManager = credentialsManager;
+        this.redisDatabase = redisDatabase;
+    }
     
     @PostMapping(value = "login")
     public ResponseEntity<String> login(@RequestBody JSONObject request) {
@@ -36,18 +44,18 @@ public class APIKeysController extends Controller {
             log.warning("[404] Wallet is not registered or password is wrong");
             return ResponseEntity.notFound().build();
         }
-        
-        RedisDatabase.delToken(walletUUID);
+    
+        redisDatabase.delToken(walletUUID);
     
         UUID token = UUID.randomUUID();
-        RedisDatabase.setexToken(walletUUID, sessionLength, token);
+        redisDatabase.setexToken(walletUUID, sessionLength, token);
         log.info("[200] Saved new token for wallet");
         return ResponseEntity.ok(token.toString());
     }
     
     private boolean loginWallet(String walletUUID, String password) {
-        byte[] hash = RedisDatabase.getHash(walletUUID);
-        byte[] salt = RedisDatabase.getSalt(walletUUID);
+        byte[] hash = redisDatabase.getHash(walletUUID);
+        byte[] salt = redisDatabase.getSalt(walletUUID);
         
         HashAndSalt hashAndSalt = HashAndSalt.builder().salt(salt).hash(hash).build();
         return credentialsManager.validatePassword(password, hashAndSalt);
@@ -64,10 +72,10 @@ public class APIKeysController extends Controller {
             return ResponseEntity.badRequest().build();
         }
         
-        if (RedisDatabase.tokenExists(walletUUID)) {
-            String tokenOriginal = RedisDatabase.getToken(walletUUID);
+        if (redisDatabase.tokenExists(walletUUID)) {
+            String tokenOriginal = redisDatabase.getToken(walletUUID);
             if (tokenOriginal.equals(token)) {
-                RedisDatabase.delToken(walletUUID);
+                redisDatabase.delToken(walletUUID);
                 return ResponseEntity.ok().build();
             }
             else {
@@ -123,12 +131,12 @@ public class APIKeysController extends Controller {
     }
     
     private void registerNewWallet(String walletUUID, HashAndSalt hashAndSalt) {
-        RedisDatabase.setHash(walletUUID, hashAndSalt.getHash());
-        RedisDatabase.setSalt(walletUUID, hashAndSalt.getSalt());
+        redisDatabase.setHash(walletUUID, hashAndSalt.getHash());
+        redisDatabase.setSalt(walletUUID, hashAndSalt.getSalt());
     }
     
     private boolean walletIsRegistered(String walletUUID) {
-        return RedisDatabase.hashExists(walletUUID);
+        return redisDatabase.hashExists(walletUUID);
     }
     
     private ResponseEntity badRequest(String msg) {

@@ -1,11 +1,18 @@
 package io.raspberrywallet.authorizationserver.configuration;
 
-class RedisConfiguration {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import redis.clients.jedis.Jedis;
+
+@Configuration
+public class RedisConfiguration {
     
+    private Jedis jedis;
     
-    RedisConfiguration() {
-        
+    @Autowired
+    public RedisConfiguration(Jedis jedis) {
+        this.jedis = jedis;
     }
-    
     
 }

@@ -1,5 +1,8 @@
 package io.raspberrywallet.authorizationserver;
 
+import io.raspberrywallet.authorizationserver.configuration.RedisConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.util.UUID;
@@ -7,68 +10,78 @@ import java.util.UUID;
 /**
  * It's simply Fascade to Redis database via Jedis.
  */
-abstract class RedisDatabase {
+@Service
+class RedisDatabase {
     
-    private static Jedis jedis = JedisFactory.getJedis();
+    private Jedis jedis;
+    private final JedisKeysFactory jedisKeysFactory;
     
-    private RedisDatabase() {}
+    @Autowired
+    public RedisDatabase(Jedis jedis, JedisKeysFactory jedisKeysFactory) {
+        
+        // Jedis bean is not autowired
+        // find why :(
+        
+        this.jedis = jedis;
+        this.jedisKeysFactory = jedisKeysFactory;
+    }
     
-    static String getSecret(String walletUUID) throws ValueNotFoundException {
-        if (jedis.exists(JedisKeysFactory.getSecretKey(walletUUID)))
-            return jedis.get(JedisKeysFactory.getSecretKey(walletUUID));
+    String getSecret(String walletUUID) throws ValueNotFoundException {
+        if (jedis.exists(jedisKeysFactory.getSecretKey(walletUUID)))
+            return jedis.get(jedisKeysFactory.getSecretKey(walletUUID));
         else
             throw new ValueNotFoundException();
     }
     
-    static boolean secretExists(String walletUUID) {
-        return jedis.exists(JedisKeysFactory.getSecretKey(walletUUID));
+    boolean secretExists(String walletUUID) {
+        return jedis.exists(jedisKeysFactory.getSecretKey(walletUUID));
     }
     
-    static void setSecret(String walletUUID, String secret) {
-        jedis.set(JedisKeysFactory.getSecretKey(walletUUID), secret);
+    void setSecret(String walletUUID, String secret) {
+        jedis.set(jedisKeysFactory.getSecretKey(walletUUID), secret);
     }
     
-    static void delSecret(String walletUUID) {
-        jedis.del(JedisKeysFactory.getSecretKey(walletUUID));
+    void delSecret(String walletUUID) {
+        jedis.del(jedisKeysFactory.getSecretKey(walletUUID));
     }
     
-    static String getToken(String walletUUID) {
-        return jedis.get(JedisKeysFactory.getTokenKey(walletUUID));
+    String getToken(String walletUUID) {
+        return jedis.get(jedisKeysFactory.getTokenKey(walletUUID));
     }
     
-    static void delToken(String walletUUID) {
-        jedis.del(JedisKeysFactory.getTokenKey(walletUUID));
+    void delToken(String walletUUID) {
+        jedis.del(jedisKeysFactory.getTokenKey(walletUUID));
     }
     
-    static boolean tokenExists(String walletUUID) {
-        return jedis.exists(JedisKeysFactory.getTokenKey(walletUUID));
+    boolean tokenExists(String walletUUID) {
+        return jedis.exists(jedisKeysFactory.getTokenKey(walletUUID));
     }
     
-    static void setexToken(String walletUUID, int sessionLength, UUID token) {
-        jedis.setex(JedisKeysFactory.getTokenKey(walletUUID), sessionLength, token.toString());
+    void setexToken(String walletUUID, int sessionLength, UUID token) {
+        jedis.setex(jedisKeysFactory.getTokenKey(walletUUID), sessionLength, token.toString());
     }
     
-    static byte[] getHash(String walletUUID) {
-        return jedis.get(JedisKeysFactory.getHashKey(walletUUID).getBytes());
+    byte[] getHash(String walletUUID) {
+        return jedis.get(jedisKeysFactory.getHashKey(walletUUID).getBytes());
     }
     
-    static byte[] getSalt(String walletUUID) {
-        return jedis.get(JedisKeysFactory.getSaltKey(walletUUID).getBytes());
+    byte[] getSalt(String walletUUID) {
+        return jedis.get(jedisKeysFactory.getSaltKey(walletUUID).getBytes());
     }
     
-    static void setHash(String walletUUID, byte[] hash) {
-        jedis.set(JedisKeysFactory.getHashKey(walletUUID).getBytes(), hash);
+    void setHash(String walletUUID, byte[] hash) {
+        jedis.set(jedisKeysFactory.getHashKey(walletUUID).getBytes(), hash);
     }
     
-    static void setSalt(String walletUUID, byte[] salt) {
-        jedis.set(JedisKeysFactory.getSaltKey(walletUUID).getBytes(), salt);
+    void setSalt(String walletUUID, byte[] salt) {
+        jedis.set(jedisKeysFactory.getSaltKey(walletUUID).getBytes(), salt);
     }
     
-    static boolean hashExists(String walletUUID) {
-        return jedis.exists(JedisKeysFactory.getHashKey(walletUUID));
+    boolean hashExists(String walletUUID) {
+        return jedis.exists(jedisKeysFactory.getHashKey(walletUUID));
     }
     
-    static boolean ping() {
+    boolean ping() {
         try {
             String pingResult = jedis.ping();
             return pingResult != null && !pingResult.equals("");
